@@ -16,7 +16,7 @@ EXPOSE ${SERVICE_PORT}
 COPY   ./include/ /tmp/
 COPY   ./configuration/ /tmp/config/
 
-HEALTHCHECK --start-period=120s --interval=3m --timeout=5s CMD s=$(curl -s -o /dev/null -w "%{http_code}\n" http://127.0.0.1:$SERVICE_PORT); [[ "$s" == "407" ]] || [[ "$s" == "22" ]] && exit 0 || exit 1;
+HEALTHCHECK --start-period=120s --interval=3m --timeout=5s CMD s=$(curl -s -o /dev/null -w "%{http_code}\n" http://127.0.0.1:$SERVICE_PORT); [[ "$s" == "407" ]] || [[ "$s" == "200" ]] && exit 0 || exit 1;
 
 USER root
 WORKDIR /root

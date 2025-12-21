@@ -1,5 +1,5 @@
 FROM   alpine:latest
-LABEL  version="1.4.5"
+LABEL  version="1.4.6"
 LABEL  description="WebOne is a HTTP(S) Proxy for vintage browsers that aren't HTTPS'in these days"
 ARG    REPO=https://github.com/atauenis/webone.git
 ARG    BRANCH=master
@@ -17,7 +17,7 @@ EXPOSE ${SERVICE_PORT}
 COPY   ./include/ /tmp/
 COPY   ./configuration/ /tmp/config/
 
-HEALTHCHECK --start-period=120s --interval=3m --timeout=5s CMD s=$(curl -s -o /dev/null -w "%{http_code}\n" http://127.0.0.1:$SERVICE_PORT); [[ "$s" == "407" ]] || [[ "$s" == "22" ]] && exit 0 || exit 1;
+HEALTHCHECK --start-period=120s --interval=3m --timeout=5s CMD s=$(curl -s -o /dev/null -w "%{http_code}\n" http://127.0.0.1:$SERVICE_PORT); [[ "$s" == "407" ]] || [[ "$s" == "200" ]] && exit 0 || exit 1;
 
 USER root
 WORKDIR /root
@@ -25,7 +25,7 @@ WORKDIR /root
 RUN apk --no-cache -U upgrade && \
     apk --no-cache add libstdc++ libgcc libintl icu-libs imagemagick ffmpeg yt-dlp logrotate bash git openssl curl wget tzdata && \
     apk --no-cache add libgdiplus --repository https://dl-3.alpinelinux.org/alpine/edge/testing/ && \
-    adduser -D -S -s /bin/bash -H webone && \
+    adduser -D -S -s /bin/sh -H webone && \
     git config --global http.version HTTP/1.1 && \
 ### DOWNLOAD AND BUILD
     wget --progress=dot:giga https://dot.net/v1/dotnet-install.sh && \
