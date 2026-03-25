@@ -32,6 +32,8 @@ RUN apk --no-cache -U upgrade && \
     chmod +x ./dotnet-install.sh && \
     ./dotnet-install.sh -c 8.0 && \
     git clone --depth 1 --branch ${BRANCH} ${REPO} && \
+    if [ `uname -m` == "x86_64" ]; then DOTNETARCH="x64"; fi && \
+    if [ `uname -m` == "aarch64" ]; then DOTNETARCH="arm64"; fi && \
     /root/.dotnet/dotnet build ./webone/WebOne.csproj -r linux-musl-x64 && \
     /root/.dotnet/dotnet publish ./webone/WebOne.csproj -c Release -r linux-musl-x64 --self-contained -o ${INSTALL_DIR} && \
 ### CONFIGURATION
